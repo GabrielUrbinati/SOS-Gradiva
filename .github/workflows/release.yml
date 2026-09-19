@@ -28,7 +28,7 @@ jobs:
       - name: Instalar dependencias e sincronizar Capacitor
         run: |
           npm install
-          npx @capacitor/cli update android
+          node ./node_modules/@capacitor/cli/bin/capacitor update android
 
       - name: Gerar APK e Bundle no Android
         working-directory: ./android
