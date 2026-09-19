@@ -1,0 +1,41 @@
+name: Build and Release Android App
+
+on:
+  push:
+    tags:
+      - 'v*' # Dispara o workflow automaticamente sempre que você cria uma tag com 'v' (ex: v1.0.0)
+
+jobs:
+  build:
+    name: Compilar e Liberar APK/AAB
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4[cite: 1]
+
+      - name: Configurar o Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Configurar o Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Compilar o Aplicativo (Exemplo Gradle)
+        run: |
+          # Dica: Se o seu projeto estiver em uma pasta específica (ex: cd android), ajuste aqui
+          chmod +x gradlew || true
+          # Exemplo para gerar APK e AAB de Release:
+          # ./gradlew assembleRelease bundleRelease
+
+      - name: Publicar Release no GitHub
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            # Caminho dos arquivos gerados que vão para a aba Releases (ajuste se necessário)
+            # app/build/outputs/apk/release/app-release.apk
+            # app/build/outputs/bundle/release/app-release.aab
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
